@@ -5,12 +5,12 @@
 from kafka import KafkaConsumer
 from pymongo import MongoClient
 from pymongo.server_api import ServerApi
+
 import json
-import subprocess
 
-
-# replace here with your mongodb url 
-uri = "mongodb+srv://yareli:morchis088@nosql.3mfx8ew.mongodb.net/?retryWrites=true&w=majority"
+uri = "mongodb+srv://yareli:yare1@nosql.3mfx8ew.mongodb.net/?retryWrites=true&w=majority"
+#Local = "mongodb://127.0.0.1:27017"
+#URL del profe = "mongodb+srv://adsoft:adsoft-sito@cluster0.kzghgph.mongodb.net/?retryWrites=true&w=majority"
 
 # Create a new client and connect to the server
 #client = MongoClient(uri, server_api=ServerApi('1'))
@@ -25,18 +25,16 @@ uri = "mongodb+srv://yareli:morchis088@nosql.3mfx8ew.mongodb.net/?retryWrites=tr
 # Connect to MongoDB and pizza_data database
 
 try:
-    client = MongoClient(uri, username='mongo', password='yareli', authSource='admin')
+    client = MongoClient(uri)
     client.admin.command('ping')
     print("Pinged your deployment. You successfully connected to MongoDB!")
 
-    db = client.nosql
+    db = client.memes
     print("MongoDB Connected successfully!")
 except:
     print("Could not connect to MongoDB")
 
-consumer = KafkaConsumer('test',bootstrap_servers=[
-     'my-kafka-0.my-kafka-headless.yarelib07.svc.cluster.local:9092'
-    ])
+consumer = KafkaConsumer('test',bootstrap_servers=[' my-kafka-0.my-kafka-headless.yarelib07.svc.cluster.local:9092'])#'my-kafka-0.my-kafka-headless.kafka-adsoftsito.svc.cluster.local:9092'])
 # Parse received data from Kafka
 for msg in consumer:
     record = json.loads(msg.value)
@@ -44,13 +42,13 @@ for msg in consumer:
     name = record['name']
 
     # Create dictionary and ingest data into MongoDB
-    try: 
+    try:
        meme_rec = {'name':name }
        print (meme_rec)
-       meme_id = db.nosql_info.insert_one(meme_rec)
+       meme_id = db.memes_info.insert_one(meme_rec)
        print("Data inserted with record ids", meme_id)
+    except:
+       print("Could not insert into MongoDB")
 
-       subprocess.call(['sh', './test.sh'])
 
-    except Exception as e:
-        print("Could not insert into MongoDB:", e)
+
