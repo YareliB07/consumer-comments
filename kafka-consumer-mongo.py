@@ -9,7 +9,6 @@ import json
 import subprocess
 
 
-
 # replace here with your mongodb url 
 uri = "mongodb+srv://yareli:morchis088@nosql.3mfx8ew.mongodb.net/?retryWrites=true&w=majority"
 
