@@ -13,7 +13,6 @@ import subprocess
 # replace here with your mongodb url 
 uri = "mongodb+srv://yareli:morchis088@nosql.3mfx8ew.mongodb.net/?retryWrites=true&w=majority"
 
-
 # Create a new client and connect to the server
 #client = MongoClient(uri, server_api=ServerApi('1'))
 # Send a ping to confirm a successful connection
