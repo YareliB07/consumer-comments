@@ -43,12 +43,39 @@ for msg in consumer:
 
     # Create dictionary and ingest data into MongoDB
     try:
-       meme_rec = {'name':name }
-       print (meme_rec)
-       meme_id = db.memes_info.insert_one(meme_rec)
-       print("Data inserted with record ids", meme_id)
+       nosql_rec = {'name':name }
+       print (nosql_rec)
+       nosql_id = db.nosql_info.insert_one(nosql_rec)
+       print("Data inserted with record ids", nosql_id)
+
+       subprocess.call(['sh', './test.sh'])
+
     except:
        print("Could not insert into MongoDB")
 
+
+       
+
+
+
+
+    # Create dictionary and ingest data into MongoDB
+    try:
+       agg_result= db.nosql_info.aggregate(
+       [{
+         "$group" : 
+         {  "_id" : "$name", 
+            "n"    : {"$sum": 1}
+         }}
+       ])
+       db.nosql_summary.delete_many({})
+       for i in agg_result:
+         print(i)
+         summary_id = db.nosql_summary.insert_one(i)
+         print("Summary inserted with record ids", summary_id)
+
+    except Exception as e:
+       print(f'group by caught {type(e)}: ')
+       print(e)
 
 
