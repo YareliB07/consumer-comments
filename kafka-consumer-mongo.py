@@ -77,5 +77,3 @@ for msg in consumer:
     except Exception as e:
        print(f'group by caught {type(e)}: ')
        print(e)
-
-
